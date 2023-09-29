@@ -42,6 +42,39 @@ def delete_timetable():
         print(f"{student_name}'s timetable deleted.")
     else:
         print(f"{student_name}'s timetable not found.")
+# Added functions to save and load timetable data to/from a text file.
+
+def save_timetables(filename):
+    with open(filename, "w") as file:
+        for student, timetable in timetables.items():
+            file.write(student + "\n")
+            for day, schedule in timetable.items():
+                file.write(day + ":" + schedule + "\n")
+            file.write("\n")
+
+def load_timetables(filename):
+    global timetables
+    timetables = {}
+    try:
+        with open(filename, "r") as file:
+            lines = file.readlines()
+            student = None
+            timetable = {}
+            for line in lines:
+                line = line.strip()
+                if not line:
+                    if student:
+                        timetables[student] = timetable
+                    student = None
+                    timetable = {}
+                else:
+                    if ":" in line:
+                        day, schedule = line.split(":", 1)
+                        timetable[day] = schedule
+                    else:
+                        student = line
+    except FileNotFoundError:
+        pass
 
 # Main loop
 while True:
@@ -59,6 +92,25 @@ while True:
         break
     else:
         print("Invalid choice. Please try again.")
+        
+# Updated the main program to load existing data at startup and save data on program exit.
+if __name__ == "__main__":
+    load_timetables("timetable_data.txt")  # Load existing data at startup
+    while True:
+        display_menu()
+        choice = input("Enter your choice: ")
+        if choice == "1":
+            view_timetable()
+        elif choice == "2":
+            add_timetable()
+        elif choice == "3":
+            delete_timetable()
+        elif choice == "4":
+            save_timetables("timetable_data.txt")  # Save data on program exit
+            print("Exiting the Timetable Management System.")
+            break
+        else:
+            print("Invalid choice. Please try again.")
 
 # Save the data.
 with open("timetable_data.txt", "w") as file:
