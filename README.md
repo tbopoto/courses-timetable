@@ -1,24 +1,72 @@
 # courses-timetable
 # University Timetable Repository
+#This repository helps university students organize and manage their class timetables. It includes sample timetables, a template for creating your own, and guidelines for usage.
 
-This repository helps university students organize and manage their class timetables. It includes sample timetables, a template for creating your own, and guidelines for usage.
+import os
+timetables = {}
 
-## Repository Contents
-- [Sample Timetables](/sample-timetables): Contains sample timetables for various majors and semesters.
-- [Template](/template): A template for creating your own timetable.
-- [Documentation](/docs): Guidelines and instructions for using and contributing to this repository.
+def display_menu():
+    print("\nTimetable Management System")
+    print("1. View Timetable")
+    print("2. Add Timetable")
+    print("3. Delete Timetable")
+    print("4. Exit")
 
-## Getting Started
-Clone or download this repository to your local machine to access the timetables and template. You can also fork the repository to your own GitHub account.
+def view_timetable():
+    print("\nView Timetable")
+    for student, timetable in timetables.items():
+        print(f"Student: {student}")
+        print("Timetable:")
+        for day, schedule in timetable.items():
+            print(f"  {day}: {schedule}")
+        print()
 
-## How to Use
-- To use a sample timetable, navigate to the appropriate folder in `sample-timetables` and open the corresponding PDF or image file.
-- To create your own timetable, use the template provided in the `template` folder. Follow the guidelines in the documentation to customize it to your needs.
+def add_timetable():
+    student_name = input("Enter student name: ")
+    if student_name in timetables:
+        print(f"{student_name}'s timetable already exists.")
+        return
 
-## Contributing
-Contributions to this repository are welcome! If you have a better timetable template or additional resources to share, please follow these steps:
-1. Fork the repository to your own GitHub account.
-2. Create a new branch for your changes.
-3. Make your changes and commit them.
-4. Create a pull request, explaining your changes and improvements.
+    timetable = {}
+    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    for day in days:
+        schedule = input(f"Enter {day}'s schedule: ")
+        timetable[day] = schedule
 
+    timetables[student_name] = timetable
+    print(f"{student_name}'s timetable added successfully.")
+
+def delete_timetable():
+    student_name = input("Enter student name to delete timetable: ")
+    if student_name in timetables:
+        del timetables[student_name]
+        print(f"{student_name}'s timetable deleted.")
+    else:
+        print(f"{student_name}'s timetable not found.")
+
+# Main loop
+while True:
+    display_menu()
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        view_timetable()
+    elif choice == "2":
+        add_timetable()
+    elif choice == "3":
+        delete_timetable()
+    elif choice == "4":
+        print("Exiting the Timetable Management System.")
+        break
+    else:
+        print("Invalid choice. Please try again.")
+
+# Save the data .
+with open("timetable_data.txt", "w") as file:
+    for student, timetable in timetables.items():
+        file.write(student + "\n")
+        for day, schedule in timetable.items():
+            file.write(day + ":" + schedule + "\n")
+        file.write("\n")
+
+print("Data saved.")
