@@ -60,7 +60,7 @@ while True:
     else:
         print("Invalid choice. Please try again.")
 
-# Save the data .
+# Save the data.
 with open("timetable_data.txt", "w") as file:
     for student, timetable in timetables.items():
         file.write(student + "\n")
