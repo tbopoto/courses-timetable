@@ -1,4 +1,3 @@
-# courses-timetable
 # University Timetable Repository
 #This repository helps university students organize and manage their class timetables. It includes sample timetables, a template for creating your own, and guidelines for usage.
 
